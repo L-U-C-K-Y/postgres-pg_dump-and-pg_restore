@@ -173,8 +173,9 @@ do
   END_TIME=$(date +%s)
   log "Database $DB_NAME restored from $RESTORE_FILE_PATH in $(convertsecs $((END_TIME-START_TIME)))"
 
-  log "Removing $PGUSER_RESTORE from role $ROLE_NAME..."
-  PGPASSWORD=$PGPASSWORD_RESTORE psql -h $PGHOST_RESTORE -p $PGPORT_RESTORE -U $PGUSER_RESTORE -c "REVOKE $ROLE_NAME FROM $PGUSER_RESTORE;"
+  # uncomment this line if you want to remove the role after restoring
+  # log "Removing $PGUSER_RESTORE from role $ROLE_NAME..."
+  # PGPASSWORD=$PGPASSWORD_RESTORE psql -h $PGHOST_RESTORE -p $PGPORT_RESTORE -U $PGUSER_RESTORE -c "REVOKE $ROLE_NAME FROM $PGUSER_RESTORE;"
 done
 
 END_TIME_TOTAL_RESTORE=$(date +%s)

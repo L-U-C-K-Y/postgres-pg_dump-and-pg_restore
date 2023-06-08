@@ -77,10 +77,10 @@ read -s PGPASSWORD_RESTORE
 export PGPASSWORD_RESTORE
 echo
 
-# Test connections
-PGPASSWORD=$PGPASSWORD_DUMP psql -h $PGHOST_DUMP -p $PGPORT_DUMP -U $PGUSER_DUMP -c '\q' || exit
+# Test connections, requires postgres default password
+PGPASSWORD=$PGPASSWORD_DUMP psql -h $PGHOST_DUMP -p $PGPORT_DUMP -U $PGUSER_DUMP -d postgres -c '\q' || exit
 log "Dump connection successful."
-PGPASSWORD=$PGPASSWORD_RESTORE psql -h $PGHOST_RESTORE -p $PGPORT_RESTORE -U $PGUSER_RESTORE -c '\q' || exit
+PGPASSWORD=$PGPASSWORD_RESTORE psql -h $PGHOST_RESTORE -p $PGPORT_RESTORE -U $PGUSER_RESTORE -d postgres -c '\q' || exit
 log "Restore connection successful."
 
 log "STARTING DUMP"
@@ -123,6 +123,7 @@ do
   DUMP_FILE_PATH="${DUMP_DIR}${DUMP_FILE}"
   RESTORE_FILE_PATH="${RESTORE_DIR}${RESTORE_FILE}"
 
+  # Create role name by removing the last underscore and everything after it from the database name
   ROLE_NAME=$(echo $DB_NAME | rev | cut -d '_' -f 2- | rev)
 
   # Check if role exists

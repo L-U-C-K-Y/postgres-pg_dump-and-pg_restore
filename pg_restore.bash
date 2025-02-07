@@ -22,6 +22,9 @@ if [ -z "$RESTORE_DIR" ]; then
   exit 1
 fi
 
+# Add trailing slash if missing
+[[ "${RESTORE_DIR}" != */ ]] && RESTORE_DIR="${RESTORE_DIR}/"
+
 LOGFILE="${RESTORE_DIR}pg_restore.log"
 
 # Logging function
